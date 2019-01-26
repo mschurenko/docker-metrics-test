@@ -12,26 +12,20 @@ import (
 )
 
 func main() {
-
-	cli, err := client.NewClientWithOpts(client.WithVersion("1.39"))
-	if err != nil {
-		log.Fatal(err)
+	if len(os.Args) < 2 {
+		fmt.Println("usage: ", os.Args[0], "<container_id> [<client_version]")
+		os.Exit(1)
 	}
 
-	// containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{})
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	clientVer := "1.38"
 
-	// var id string
-	// for _, container := range containers {
-	// 	// fmt.Printf("%s %s\n", container.ID[0:10], container.Status)
-	// 	id = container.ID
-	// }
+	if len(os.Args) == 3 {
+		clientVer = os.Args[2]
+	}
 
-	if len(os.Args) != 2 {
-		fmt.Println("usage: ", os.Args[0], "<container_id>")
-		os.Exit(1)
+	cli, err := client.NewClientWithOpts(client.WithVersion(clientVer))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	id := os.Args[1]
